@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">itis_android_tasks</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text">text</string>
+    <string name="fab">fab</string>
+    <string name="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus neque nisl, finibus eget laoreet a, luctus ut justo. Donec interdum lacinia fermentum. Suspendisse non mauris a ipsum consequat porttitor non in sem. Suspendisse non neque tellus. Maecenas quis suscipit elit. Aliquam sagittis purus tempus eleifend aliquam. Nam euismod diam sit amet lacinia gravida. Pellentesque vulputate enim ac nibh sollicitudin lobortis. Duis molestie sem ipsum, at placerat risus interdum in. Suspendisse aliquet elit ex, vitae tempor magna imperdiet ac. Aliquam venenatis et nibh ut accumsan.</string>
+    <string name="enter_number">Enter number:</string>
+    <string name="add_random">Add Random</string>
+    <string name="remove_random">Remove Random</string>
+    <string name="add_one_random">Add One Random</string>
+    <string name="remove_one_random">Remove One Random</string>
+    <string name="setca">Сетка</string>
+    <string name="spisok">Список</string>
+    <string name="bloks">Блоки</string>
 </resources>
