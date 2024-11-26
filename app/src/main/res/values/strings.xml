@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">itis_android_tasks</string>
+    <string name="question">Вопрос</string>
+    <string name="ans1">Ответ 1</string>
+    <string name="ans2">Ответ 2</string>
+    <string name="ans3">Ответ 3</string>
+    <string name="ans4">Ответ 4</string>
+    <string name="next">Следующая</string>
+    <string name="previous">Предыдущая</string>
+    <string name="counter_example">1/12</string>
+    <string name="counter">%1$s/%2$s</string>
+    <string name="close">Завершить</string>
+    <string name="questionnaire_ended">Вы прошли опрос.</string>
 </resources>
