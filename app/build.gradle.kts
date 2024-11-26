@@ -10,6 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.example.itis_android_tasks"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -47,6 +48,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -60,6 +64,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.kirich1409.viewbindingpropertydelegate)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
