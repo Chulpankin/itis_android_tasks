@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Itis_android_tasks" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Itis_android_tasks" parent="Theme.Material3.DayNight.NoActionBar" />
+
+    <style name="AppTheme.Red" parent="Theme.Itis_android_tasks">
+        <item name="colorPrimary">@color/red_500</item>
+        <item name="colorPrimaryVariant">@color/red_700</item>
+        <item name="colorSecondary">@color/pink_200</item>
+        <item name="colorSecondaryVariant">@color/pink_700</item>
+        <item name="android:statusBarColor">@color/status_bar_red</item>
+        <item name="android:navigationBarColor">@color/navigation_bar_red</item>
+    </style>
+
+    <style name="AppTheme.Green" parent="Theme.Itis_android_tasks">
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimaryVariant">@color/green_700</item>
+        <item name="colorSecondary">@color/light_green_200</item>
+        <item name="colorSecondaryVariant">@color/light_green_700</item>
+        <item name="android:statusBarColor">@color/status_bar_green</item>
+        <item name="android:navigationBarColor">@color/navigation_bar_green</item>
+    </style>
+
+    <style name="AppTheme.Yellow" parent="Theme.Itis_android_tasks">
+        <item name="colorPrimary">@color/yellow_500</item>
+        <item name="colorPrimaryVariant">@color/yellow_700</item>
+        <item name="colorSecondary">@color/light_yellow_200</item>
+        <item name="colorSecondaryVariant">@color/light_yellow_700</item>
+        <item name="android:statusBarColor">@color/status_bar_yellow</item>
+        <item name="android:navigationBarColor">@color/navigation_bar_yellow</item>
+    </style>
 </resources>
