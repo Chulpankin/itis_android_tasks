@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">itis_android_tasks</string>
+    <string name="please_enter_the_number_of_coroutines">Please enter the number of coroutines</string>
+    <string name="cancelled_coroutines">Cancelled %1$s coroutines</string>
+    <string name="no_coroutines_running">No coroutines running</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="dispatcher">Dispatcher:</string>
+    <string name="cancellation_policy">Cancellation Policy:</string>
+    <string name="error">Error: %1$s</string>
+    <string name="execution_mode">Execution Mode:</string>
+    <string name="notification_permission_granted">Notification permission granted</string>
+    <string name="notification_permission_permanently_denied">Notification permission permanently denied</string>
+    <string name="notification_permission_already_granted">Notification permission already granted</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="notification_permission_desc">This app needs notification permission to show background work status.</string>
+    <string name="grant">Grant</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="permission_denied_desc">You have permanently denied notification permission. Please enable it in app settings.</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="coroutine_worker">Coroutine Worker</string>
+    <string name="shows_notifications">Shows notifications for background coroutine work</string>
+    <string name="coroutines_are_running_in_the_background">Coroutines are running in the background</string>
+    <string name="coroutines_were_cancelled">%1$s coroutines were cancelled</string>
+    <string name="some_coroutines_were_cancelled">%1$s coroutines were cancelled</string>
 </resources>
