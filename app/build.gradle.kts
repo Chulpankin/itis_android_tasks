@@ -5,11 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.itis_android_tasks"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.itis_android_tasks"
         minSdk = 24
+        //noinspection OldTargetApi,EditedTargetSdkVersion
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
