@@ -1,4 +1,4 @@
-package com.itis.itistasks.data.db.dao
+package com.example.itis_android_tasks.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.itis.itistasks.data.db.entities.FilmEntity
+import com.example.itis_android_tasks.data.db.entities.FilmEntity
 
 @Dao
 interface FilmDao {
@@ -33,15 +33,6 @@ interface FilmDao {
 
     @Query("SELECT * FROM films ORDER BY year DESC")
     suspend fun getAllByYearDesc(): List<FilmEntity>?
-
-    @Query("SELECT * FROM films ORDER BY year ASC")
-    suspend fun getAllByYearAsc(): List<FilmEntity>?
-
-    @Query("SELECT films.filmId, films.name, films.year, films.description, AVG(rates.rating) as average_rating FROM films LEFT JOIN rates ON films.filmId = rates.filmId GROUP BY films.filmId, films.year, films.description ORDER BY average_rating DESC")
-    suspend fun getAllByRatingDesc(): List<FilmEntity>?
-
-    @Query("SELECT films.filmId, films.name, films.year, films.description, AVG(rates.rating) as average_rating FROM films LEFT JOIN rates ON films.filmId = rates.filmId GROUP BY films.filmId, films.year, films.description ORDER BY average_rating ASC")
-    suspend fun getAllByRatingAsc(): List<FilmEntity>?
 
     @Query("SELECT EXISTS (SELECT 1 FROM films WHERE name = :name LIMIT 1)")
     fun checkNameExists(name: String) : Boolean

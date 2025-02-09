@@ -1,7 +1,7 @@
-package com.itis.itistasks.data.db.repositories
+package com.example.itis_android_tasks.data.db.repositories
 
-import com.itis.itistasks.data.db.entities.RateEntity
-import com.itis.itistasks.di.ServiceLocator
+import com.example.itis_android_tasks.data.db.entities.RateEntity
+import com.example.itis_android_tasks.di.ServiceLocator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

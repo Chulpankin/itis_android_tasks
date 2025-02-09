@@ -1,4 +1,4 @@
-package com.itis.itistasks.data.db.entities
+package com.example.itis_android_tasks.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -11,5 +11,4 @@ data class UserEntity(
     val phone: String,
     val email: String,
     val password: String,
-    val deletedDate: Long?
 )

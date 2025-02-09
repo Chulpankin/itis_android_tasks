@@ -1,8 +1,8 @@
-package com.itis.itistasks.data.db.entities
+package com.example.itis_android_tasks.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.itis.itistasks.data.model.FilmModel
+import com.example.itis_android_tasks.data.model.FilmModel
 
 @Entity(tableName="films")
 data class FilmEntity(
@@ -15,6 +15,7 @@ data class FilmEntity(
     fun toModel() = FilmModel(
         name = name,
         year = year,
-        description = description
+        description = description,
+        isFavorite = false
     )
 }

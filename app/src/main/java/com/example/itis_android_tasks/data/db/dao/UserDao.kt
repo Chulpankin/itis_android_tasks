@@ -1,4 +1,4 @@
-package com.itis.itistasks.data.db.dao
+package com.example.itis_android_tasks.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -7,9 +7,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
-import com.itis.itistasks.data.db.entities.UserEntity
-import com.itis.itistasks.data.db.entities.relations.UserFilmCrossRef
-import com.itis.itistasks.data.db.entities.relations.UserWithFavoriteFilms
+import com.example.itis_android_tasks.data.db.entities.UserEntity
+import com.example.itis_android_tasks.data.db.entities.relations.UserFilmCrossRef
+import com.example.itis_android_tasks.data.db.entities.relations.UserWithFavoriteFilms
 
 @Dao
 interface UserDao {
@@ -43,9 +43,6 @@ interface UserDao {
     @Query("SELECT EXISTS (SELECT 1 FROM users WHERE email = :email AND password = :password LIMIT 1)")
     fun checkUserData(email : String, password: String) : Boolean
 
-    @Query("UPDATE users SET deletedDate = :deletedDate WHERE userId = :id")
-    fun setDeletionDate(id: Int, deletedDate: Long)
-
     @Query("UPDATE users SET password = :password WHERE userId = :id")
     fun updatePassword(id: Int, password: String)
 
@@ -57,7 +54,4 @@ interface UserDao {
 
     @Delete()
     suspend fun deleteUserFilmCrossRef(userFilmCrossRef: UserFilmCrossRef)
-
-    @Query("SELECT * FROM users WHERE deletedDate != 0 AND deletedDate < :timeThreshold")
-    fun getUsersForDeletion(timeThreshold: Long): List<UserEntity>?
 }

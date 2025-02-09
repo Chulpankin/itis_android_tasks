@@ -1,9 +1,9 @@
-package com.itis.itistasks.data.model
+package com.example.itis_android_tasks.data.model
+
 
 data class FilmModel(
     val name : String,
     val year : Int,
-    val description : String
-) {
-    fun toRvModel() = RvFilmModel(name, year, false)
-}
+    val description : String,
+    var isFavorite: Boolean = false
+)

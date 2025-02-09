@@ -1,4 +1,4 @@
-package com.itis.itistasks.data.model
+package com.example.itis_android_tasks.data.model
 
 data class UserModel (
     val name : String,

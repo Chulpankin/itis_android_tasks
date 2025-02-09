@@ -1,77 +1,84 @@
-package com.itis.itistasks.ui.fragments
+package com.example.itis_android_tasks.ui.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.itis.itistasks.R
-import com.itis.itistasks.data.db.repositories.FilmRepository
-import com.itis.itistasks.data.model.FilmModel
-import com.itis.itistasks.databinding.FragmentAddFilmBinding
+import androidx.navigation.fragment.findNavController
+import com.example.itis_android_tasks.R
+import com.example.itis_android_tasks.data.db.repositories.FilmRepository
+import com.example.itis_android_tasks.data.model.FilmModel
+import com.example.itis_android_tasks.databinding.FragmentAddFilmBinding
+import com.example.itis_android_tasks.utils.Keys
 import kotlinx.coroutines.launch
 
 class AddFilmFragment : Fragment(R.layout.fragment_add_film) {
 
-    private val viewBinding : FragmentAddFilmBinding
-    by viewBinding(FragmentAddFilmBinding::bind)
+    private var _binding: FragmentAddFilmBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentAddFilmBinding.inflate(layoutInflater)
+
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewBinding.run {
-            btnSubmit.setOnClickListener {
-                val filmName = etFilmName.text.toString()
-                val year = etYear.text.toString()
-                val description = etDesc.text.toString()
+        super.onViewCreated(view, savedInstanceState)
 
-                if (filmName.isNotEmpty() && year.isNotEmpty() && description.isNotEmpty()) {
-                    lifecycleScope.launch {
-                        if (FilmRepository.checkNameExists(filmName)) {
-                            Toast.makeText(
-                                requireContext(),
-                                getString(R.string.film_with_this_name_already_exists),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            etFilmName.text?.clear()
-                            etYear.text?.clear()
-                            etDesc.text?.clear()
-                        } else {
-                            val film = FilmModel(
-                                name = filmName,
-                                year = year.toInt(),
-                                description = description
-                            )
+        binding.btnSubmit.setOnClickListener { addFilm() }
+    }
 
-                            if (FilmRepository.add(film)) {
-                                Toast.makeText(
-                                    requireContext(),
-                                    getString(R.string.film_added),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+    private fun addFilm() {
+        val filmName = binding.etFilmName.text.toString().trim()
+        val year = binding.etYear.text.toString().trim()
+        val description = binding.etDesc.text.toString().trim()
 
-                            parentFragmentManager.beginTransaction()
-                                .replace(
-                                    R.id.container,
-                                    FilmPageFragment.newInstance(film.name),
-                                    FilmPageFragment.FILM_PAGE_FRAGMENT_TAG
-                                )
-                                .addToBackStack(null)
-                                .commit()
-                        }
-                    }
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.fill_all_fields),
-                        Toast.LENGTH_SHORT
-                    ).show()
+        if (filmName.isEmpty() || year.isEmpty() || description.isEmpty()) {
+            showToast(getString(R.string.fill_all_fields))
+            return
+        }
+
+        lifecycleScope.launch {
+            if (FilmRepository.checkNameExists(filmName)) {
+                showToast(getString(R.string.film_with_this_name_already_exists))
+                clearFields()
+            } else {
+                val film = FilmModel(
+                    name = filmName,
+                    year = year.toInt(),
+                    description = description
+                )
+
+                if (FilmRepository.add(film)) {
+                    showToast(getString(R.string.film_added))
+                    navigateToFilmPage(filmName)
                 }
             }
         }
     }
 
-    companion object {
-        const val ADD_FILM_FRAGMENT_TAG = "ADD_FILM_FRAGMENT_TAG"
+    private fun navigateToFilmPage(filmName: String) {
+        findNavController().navigate(
+            R.id.action_addFilmFragment_to_filmPageFragment,
+            Bundle().apply { putString(Keys.KEY_FILM_NAME, filmName) }
+        )
+    }
+
+    private fun clearFields() {
+        binding.etFilmName.text?.clear()
+        binding.etYear.text?.clear()
+        binding.etDesc.text?.clear()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

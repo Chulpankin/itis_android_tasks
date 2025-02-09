@@ -33,6 +33,19 @@
     <string name="recover">Recover</string>
     <string name="delete">Delete</string>
     <string name="film_with_this_name_already_exists">Film with this name already exists</string>
+    <string name="profile">Profile</string>
+    <string name="favorites">Favorites</string>
+    <string name="films">Films</string>
+    <string name="please_enter_credentials">Please enter credentials</string>
+    <string name="error_name_empty">Name cannot be empty</string>
+    <string name="error_email_empty">Email cannot be empty</string>
+    <string name="error_invalid_email">Invalid email format</string>
+    <string name="error_phone_empty">Phone number cannot be empty</string>
+    <string name="error_invalid_phone">Invalid phone number format</string>
+    <string name="error_password_empty">Password cannot be empty</string>
+    <string name="added_to_favorites">Added to favorites</string>
+    <string name="removed_from_favorites">Removed from favorites</string>
+    <string name="add_film">Add Film</string>
 
     <string-array name="filter_options">
         <item>Rating ascending</item>

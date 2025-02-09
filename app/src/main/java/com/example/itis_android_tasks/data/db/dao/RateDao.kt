@@ -1,9 +1,9 @@
-package com.itis.itistasks.data.db.dao
+package com.example.itis_android_tasks.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.itis.itistasks.data.db.entities.RateEntity
+import com.example.itis_android_tasks.data.db.entities.RateEntity
 
 @Dao
 interface RateDao {

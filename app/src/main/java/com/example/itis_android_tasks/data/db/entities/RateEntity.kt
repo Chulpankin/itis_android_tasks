@@ -1,4 +1,4 @@
-package com.itis.itistasks.data.db.entities
+package com.example.itis_android_tasks.data.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

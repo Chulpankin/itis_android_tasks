@@ -1,7 +1,7 @@
-package com.itis.itistasks
+package com.example.itis_android_tasks
 
 import android.app.Application
-import com.itis.itistasks.di.ServiceLocator
+import com.example.itis_android_tasks.di.ServiceLocator
 
 class FilmsApp : Application() {
     override fun onCreate() {

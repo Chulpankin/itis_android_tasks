@@ -1,14 +1,14 @@
-package com.itis.itistasks.data.db
+package com.example.itis_android_tasks.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.itis.itistasks.data.db.dao.FilmDao
-import com.itis.itistasks.data.db.dao.RateDao
-import com.itis.itistasks.data.db.dao.UserDao
-import com.itis.itistasks.data.db.entities.FilmEntity
-import com.itis.itistasks.data.db.entities.RateEntity
-import com.itis.itistasks.data.db.entities.UserEntity
-import com.itis.itistasks.data.db.entities.relations.UserFilmCrossRef
+import com.example.itis_android_tasks.data.db.dao.FilmDao
+import com.example.itis_android_tasks.data.db.dao.RateDao
+import com.example.itis_android_tasks.data.db.dao.UserDao
+import com.example.itis_android_tasks.data.db.entities.FilmEntity
+import com.example.itis_android_tasks.data.db.entities.RateEntity
+import com.example.itis_android_tasks.data.db.entities.UserEntity
+import com.example.itis_android_tasks.data.db.entities.relations.UserFilmCrossRef
 
 @Database(entities=[
     UserEntity::class,

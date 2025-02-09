@@ -1,92 +1,102 @@
-package com.itis.itistasks.ui.fragments
+package com.example.itis_android_tasks.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.itis.itistasks.R
-import com.itis.itistasks.data.CurrentUser
-import com.itis.itistasks.data.db.entities.RateEntity
-import com.itis.itistasks.data.db.repositories.FilmRepository
-import com.itis.itistasks.data.db.repositories.RateRepository
-import com.itis.itistasks.databinding.FragmentFilmPageBinding
+import com.example.itis_android_tasks.R
+import com.example.itis_android_tasks.data.db.entities.RateEntity
+import com.example.itis_android_tasks.data.db.repositories.FilmRepository
+import com.example.itis_android_tasks.data.db.repositories.RateRepository
+import com.example.itis_android_tasks.databinding.FragmentFilmPageBinding
+import com.example.itis_android_tasks.utils.Keys
 import kotlinx.coroutines.launch
 
 class FilmPageFragment : Fragment(R.layout.fragment_film_page) {
 
-    private val viewBinding : FragmentFilmPageBinding
-    by viewBinding(FragmentFilmPageBinding::bind)
+    private var _binding: FragmentFilmPageBinding? = null
+    private val binding get() = _binding!!
+    private val sharedPreferences by lazy {
+        requireContext().getSharedPreferences(Keys.PREFS_NAME, Context.MODE_PRIVATE)
+    }
+    private val userId: Int get() = sharedPreferences.getInt(Keys.KEY_USER_ID, -1)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFilmPageBinding.inflate(layoutInflater)
+
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val filmName = arguments?.getString(FILM_NAME)
-        if (filmName == null) {
-            parentFragmentManager.popBackStack()
-        } else {
+        super.onViewCreated(view, savedInstanceState)
+        val filmName = requireArguments().getString(Keys.KEY_FILM_NAME)
+
+        if (filmName != null) {
             lifecycleScope.launch {
                 val film = FilmRepository.getEntityByName(filmName)
-                viewBinding.run {
+                binding.run {
                     tvFilmName.text = film.name
                     tvYear.text = film.year.toString()
                     tvDesc.text = film.description
                     setAvgRate(film.filmId, tvAvgRating)
-
-                    val currentRate = RateRepository.get(film.filmId, CurrentUser.get())
-                    if (currentRate != null) {
-                        seekbarRate.progress = currentRate.rating
-                        seekbarRate.isEnabled = false
-                        tvSbValue.text = currentRate.rating.toString()
-                        btnSubmit.isEnabled = false
-                    }
-
-                    seekbarRate.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
-                        override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                            tvSbValue.text = p1.toString()
-                        }
-
-                        override fun onStartTrackingTouch(p0: SeekBar?) {
-                        }
-
-                        override fun onStopTrackingTouch(p0: SeekBar?) {
-                        }
-                    })
-
-                    btnSubmit.setOnClickListener {
-                        lifecycleScope.launch {
-                            RateRepository.add(
-                                RateEntity(
-                                    filmId = film.filmId,
-                                    rating = seekbarRate.progress,
-                                    userId = CurrentUser.get()
-                                )
-                            )
-
-                            setAvgRate(film.filmId, tvAvgRating)
-                        }
-                        seekbarRate.isEnabled = false
-                        btnSubmit.isEnabled = false
-                    }
+                    setupRatingControls(film.filmId)
                 }
             }
+        } else {
+            parentFragmentManager.popBackStack()
         }
     }
 
     private suspend fun setAvgRate(filmId: Int, tvAvgRating: TextView) {
-        val rateAvg = RateRepository.getAvg(filmId)
-        tvAvgRating.text = rateAvg.toString()
+        tvAvgRating.text = RateRepository.getAvg(filmId).toString()
     }
 
-    companion object {
-        const val FILM_PAGE_FRAGMENT_TAG = "FILM_PAGE_FRAGMENT_TAG"
-        private const val FILM_NAME = "filmName"
+    private suspend fun setupRatingControls(filmId: Int) {
+        val currentRate = RateRepository.get(filmId, userId)
+        binding.run {
+            if (currentRate != null) {
+                seekbarRate.progress = currentRate.rating
+                seekbarRate.isEnabled = false
+                tvSbValue.text = currentRate.rating.toString()
+                btnSubmit.isEnabled = false
+            } else {
+                seekbarRate.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        tvSbValue.text = progress.toString()
+                    }
 
-        fun newInstance(filmName: String) = FilmPageFragment().apply {
-            arguments = Bundle().apply {
-                putString(FILM_NAME, filmName)
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                })
+
+                btnSubmit.setOnClickListener {
+                    lifecycleScope.launch {
+                        RateRepository.add(
+                            RateEntity(
+                                filmId = filmId,
+                                rating = seekbarRate.progress,
+                                userId = userId
+                            )
+                        )
+                        setAvgRate(filmId, tvAvgRating)
+                    }
+                    seekbarRate.isEnabled = false
+                    btnSubmit.isEnabled = false
+                }
             }
         }
     }
-
 }

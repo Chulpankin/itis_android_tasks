@@ -1,9 +1,9 @@
-package com.itis.itistasks.data.db.entities.relations
+package com.example.itis_android_tasks.data.db.entities.relations
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import com.itis.itistasks.data.db.entities.FilmEntity
-import com.itis.itistasks.data.db.entities.UserEntity
+import com.example.itis_android_tasks.data.db.entities.FilmEntity
+import com.example.itis_android_tasks.data.db.entities.UserEntity
 
 @Entity(
     tableName = "favorites",

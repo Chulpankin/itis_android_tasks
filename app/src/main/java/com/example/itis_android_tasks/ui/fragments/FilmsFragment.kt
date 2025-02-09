@@ -1,204 +1,120 @@
-package com.itis.itistasks.ui.fragments
+package com.example.itis_android_tasks.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.itis.itistasks.R
-import com.itis.itistasks.adapter.FilmAdapter
-import com.itis.itistasks.data.CurrentUser
-import com.itis.itistasks.data.db.repositories.FilmRepository
-import com.itis.itistasks.data.db.repositories.UserRepository
-import com.itis.itistasks.data.model.FilmModel
-import com.itis.itistasks.data.model.RvFilmModel
-import com.itis.itistasks.databinding.FragmentFilmsBinding
-import com.itis.itistasks.utils.SpinnerTypes
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.itis_android_tasks.R
+import com.example.itis_android_tasks.ui.adapter.FilmAdapter
+import com.example.itis_android_tasks.data.db.repositories.FilmRepository
+import com.example.itis_android_tasks.data.db.repositories.UserRepository
+import com.example.itis_android_tasks.data.model.FilmModel
+import com.example.itis_android_tasks.databinding.FragmentFilmsBinding
+import com.example.itis_android_tasks.utils.Keys
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class FilmsFragment : Fragment(R.layout.fragment_films) {
 
-    private val viewBinding : FragmentFilmsBinding
-    by viewBinding(FragmentFilmsBinding::bind)
-
+    private var _binding: FragmentFilmsBinding? = null
+    private val binding get() = _binding!!
     private var filmAdapter: FilmAdapter? = null
-    private var favoritesAdapter: FilmAdapter? = null
+    private val sharedPreferences
+        by lazy { requireContext().getSharedPreferences(Keys.PREFS_NAME, Context.MODE_PRIVATE) }
+    private val userId: Int get() = sharedPreferences.getInt(Keys.KEY_USER_ID, -1)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFilmsBinding.inflate(layoutInflater)
+
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        viewBinding.run {
-            btnAddNewFilm.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .add(
-                        R.id.container, AddFilmFragment(), AddFilmFragment.ADD_FILM_FRAGMENT_TAG
-                    )
-                    .addToBackStack(null)
-                    .commit()
-            }
-
-            btnProfile.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .add(
-                        R.id.container, ProfileFragment(), ProfileFragment.PROFILE_FRAGMENT_TAG
-                    )
-                    .addToBackStack(null)
-                    .commit()
-            }
-
-            spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    lifecycleScope.launch {
-                        async(Dispatchers.IO) {
-                            val filmsList = when (p2) {
-                                SpinnerTypes.RATING_ASC -> FilmRepository.getAllByRatingAsc()
-                                SpinnerTypes.RATING_DESC -> FilmRepository.getAllByRatingDesc()
-                                SpinnerTypes.YEAR_ASC -> FilmRepository.getAllByYearAsc()
-                                else -> FilmRepository.getAllByYearDesc()
-                            }
-                            showAllFilms(filmsList)
-                        }.await()
-                    }
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-
-            }
-        }
+        lifecycleScope.launch { showAllFilms(FilmRepository.getAllByYearDesc()) }
     }
 
     private fun initRecyclerView() {
         filmAdapter = FilmAdapter(
-            onItemClicked = ::onFilmClicked,
-            onBtnClicked = ::onFavoriteCbClicked,
-            onLongClicked = ::onLongClicked
-        )
-        favoritesAdapter = FilmAdapter(
-            onItemClicked = ::onFilmClicked,
-            onBtnClicked = ::onFavoriteCbInFavoritesClicked,
-            onLongClicked = ::onLongClicked
+            onItemClicked = ::navigateToFilmPage,
+            onBtnClicked = ::onFavoriteBtnClicked
         )
 
-        with(viewBinding) {
-            rvFavorites.layoutManager = GridLayoutManager(requireContext(), 2)
-            rvFavorites.adapter = favoritesAdapter
+        binding.rvFilms.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvFilms.adapter = filmAdapter
 
-            rvFilms.layoutManager = GridLayoutManager(requireContext(), 2)
-            rvFilms.adapter = filmAdapter
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ) = false
 
-            lifecycleScope.launch {
-                async(Dispatchers.IO) {
-                    showAllFavorites()
-                    showAllFilms(FilmRepository.getAllByYearDesc())
-                }.await()
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val filmModel = filmAdapter?.getItemAt(viewHolder.adapterPosition)
+                filmModel?.let {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        FilmRepository.delete(filmModel.name)
+                        UserRepository.deleteFavorite(userId, filmModel.name)
+                        showAllFilms(FilmRepository.getAllByYearDesc())
+                    }
+                }
             }
-        }
+        })
+        itemTouchHelper.attachToRecyclerView(binding.rvFilms)
     }
 
-    private fun onFilmClicked(rvFilmModel: RvFilmModel) {
-        parentFragmentManager.beginTransaction()
-            .add(
-                R.id.container,
-                FilmPageFragment.newInstance(rvFilmModel.name),
-                FilmPageFragment.FILM_PAGE_FRAGMENT_TAG
-            )
-            .addToBackStack(null)
-            .commit()
+    private fun navigateToFilmPage(filmModel: FilmModel) {
+        findNavController().navigate(
+            R.id.action_filmsFragment_to_filmPageFragment,
+            bundleOf(Keys.KEY_FILM_NAME to filmModel.name)
+        )
     }
 
-    private fun onFavoriteCbClicked(position: Int, rvFilmModel: RvFilmModel) {
+    private fun onFavoriteBtnClicked(filmModel: FilmModel) {
         lifecycleScope.launch {
-            if (rvFilmModel.isFavorite) {
-                UserRepository.addFavorite(CurrentUser.get(), rvFilmModel.name)
-                rvFilmModel.isFavorite = true
+            if (filmModel.isFavorite) {
+                UserRepository.addFavorite(userId, filmModel.name)
+                showToast(getString(R.string.added_to_favorites))
             } else {
-                UserRepository.deleteFavorite(CurrentUser.get(), rvFilmModel.name)
-                rvFilmModel.isFavorite = false
+                UserRepository.deleteFavorite(userId, filmModel.name)
+                showToast(getString(R.string.removed_from_favorites))
             }
-            activity?.runOnUiThread {
-                filmAdapter?.updateItem(position, rvFilmModel)
-            }
-            async(Dispatchers.IO) { showAllFavorites() }.await()
-        }
-    }
+            filmModel.isFavorite = !filmModel.isFavorite
 
-    private fun onFavoriteCbInFavoritesClicked(position: Int, rvFilmModel: RvFilmModel) {
-        lifecycleScope.launch {
-            UserRepository.deleteFavorite(CurrentUser.get(), rvFilmModel.name)
-            activity?.runOnUiThread {
-                rvFilmModel.isFavorite = false
-                filmAdapter?.updateItem(position, rvFilmModel)
-            }
-            async(Dispatchers.IO) { showAllFavorites() }.await()
-        }
-    }
-
-    private fun onLongClicked(rvFilmModel: RvFilmModel) : Boolean {
-        lifecycleScope.launch {
-            FilmRepository.delete(rvFilmModel.name)
-            async(Dispatchers.IO) {
-                if (UserRepository.isFavorite(CurrentUser.get(), rvFilmModel.name)) {
-                UserRepository.deleteFavorite(CurrentUser.get(), rvFilmModel.name)
-            } }.await()
-            showAllFavorites()
-            showAllFilms(FilmRepository.getAllByYearDesc())
-        }
-        return true
-    }
-
-    private suspend fun showAllFavorites() {
-        val films: List<FilmModel> = UserRepository.getAllFavorites(CurrentUser.get())
-        val newList = mutableListOf<RvFilmModel>()
-        films.map {
-            val rvFilmModel = it.toRvModel()
-            rvFilmModel.isFavorite = true
-            newList.add(rvFilmModel)
-        }
-        activity?.runOnUiThread {
-            favoritesAdapter?.setItems(newList)
         }
     }
 
     private suspend fun showAllFilms(films: List<FilmModel>?) {
-        val newList = mutableListOf<RvFilmModel>()
-        if (films.isNullOrEmpty()) {
-            activity?.runOnUiThread {
-                viewBinding.tvNoFilms.visibility = View.VISIBLE
-                viewBinding.rvFilms.visibility = View.GONE
-                viewBinding.rvFavorites.visibility = View.GONE
-                viewBinding.spinnerFilter.visibility = View.GONE
-            }
-        } else {
-            films.map {
-                val rvFilmModel = it.toRvModel()
-                rvFilmModel.isFavorite = UserRepository.isFavorite(
-                    CurrentUser.get(),
-                    rvFilmModel.name
-                )
-                newList.add(rvFilmModel)
-            }
-            activity?.runOnUiThread {
-                viewBinding.spinnerFilter.visibility = View.VISIBLE
-                viewBinding.tvNoFilms.visibility = View.GONE
-                viewBinding.rvFilms.visibility = View.VISIBLE
-                viewBinding.rvFavorites.visibility = View.VISIBLE
-                filmAdapter?.setItems(newList)
-            }
-        }
+        val newList = films?.map {
+            it.apply { isFavorite = UserRepository.isFavorite(userId, name) }
+        } ?: emptyList()
+        filmAdapter?.setItems(newList)
     }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         filmAdapter = null
-        favoritesAdapter = null
-    }
-
-
-    companion object {
-        const val FILMS_FRAGMENT_TAG = "FILMS_FRAGMENT_TAG"
     }
 }

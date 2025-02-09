@@ -1,55 +1,42 @@
-package com.itis.itistasks
+package com.example.itis_android_tasks
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.itis.itistasks.data.CurrentUser
-import com.itis.itistasks.di.ServiceLocator
-import com.itis.itistasks.ui.fragments.AuthorizationFragment
-import com.itis.itistasks.ui.fragments.FilmsFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.example.itis_android_tasks.databinding.ActivityMainBinding
+import com.example.itis_android_tasks.utils.Keys
 
 class MainActivity : AppCompatActivity() {
 
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fv_root) as NavHostFragment
+        val navController = navHostFragment.navController
+        val sharedPreferences = getSharedPreferences(Keys.PREFS_NAME, Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt(Keys.KEY_USER_ID, -1)
 
         if (savedInstanceState == null) {
-
-            if (CurrentUser.isEmpty()) {
-                supportFragmentManager.beginTransaction()
-                    .add(
-                        R.id.container, AuthorizationFragment(),
-                        AuthorizationFragment.AUTHORIZATION_FRAGMENT_TAG
-                    )
-                    .commit()
+            if (userId == -1) {
+                navController.navigate(R.id.loginFragment)
             } else {
-                supportFragmentManager.beginTransaction()
-                    .add(
-                        R.id.container, FilmsFragment(),
-                        FilmsFragment.FILMS_FRAGMENT_TAG
-                    )
-                    .commit()
-                removeUsersIfTwoMinutesPassed(System.currentTimeMillis())
+                navController.navigate(R.id.filmsFragment)
             }
         }
+
+        binding.bnvMain.setupWithNavController(navController)
     }
 
-    private fun removeUsersIfTwoMinutesPassed(currentTimeMillis: Long) {
-        val userDao = ServiceLocator.getDbInstance().getUserDao()
-
-        val sevenDaysInMillis = 7 * 24 * 60 * 60 * 1000
-
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                val usersToDelete =
-                    userDao.getUsersForDeletion(currentTimeMillis - sevenDaysInMillis)
-
-                usersToDelete?.forEach { userDao.delete(it) }
-            }
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

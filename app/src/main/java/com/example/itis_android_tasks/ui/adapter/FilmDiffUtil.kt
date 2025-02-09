@@ -1,4 +1,4 @@
-package com.example.itis_android_tasks.adapter
+package com.example.itis_android_tasks.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.itis_android_tasks.data.model.FilmModel

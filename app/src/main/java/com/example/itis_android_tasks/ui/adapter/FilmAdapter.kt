@@ -1,4 +1,4 @@
-package com.example.itis_android_tasks.adapter
+package com.example.itis_android_tasks.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import com.example.itis_android_tasks.ui.holders.FilmViewHolder
 
 class FilmAdapter(
     private val onItemClicked: (FilmModel) -> Unit,
-    private val onBtnClicked: (Int, FilmModel) -> Unit
+    private val onBtnClicked: (FilmModel) -> Unit
 ) : RecyclerView.Adapter<FilmViewHolder>() {
 
     private var itemsList = mutableListOf<FilmModel>()

@@ -1,9 +1,9 @@
-package com.itis.itistasks.data.db.repositories
+package com.example.itis_android_tasks.data.db.repositories
 
-import com.itis.itistasks.data.db.dao.FilmDao
-import com.itis.itistasks.data.db.entities.FilmEntity
-import com.itis.itistasks.data.model.FilmModel
-import com.itis.itistasks.di.ServiceLocator
+import com.example.itis_android_tasks.data.db.dao.FilmDao
+import com.example.itis_android_tasks.data.db.entities.FilmEntity
+import com.example.itis_android_tasks.data.model.FilmModel
+import com.example.itis_android_tasks.di.ServiceLocator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -38,27 +38,6 @@ object FilmRepository {
     suspend fun getAllByYearDesc(): List<FilmModel>? {
         return withContext(Dispatchers.IO) {
             val filmEntityList: List<FilmEntity>? = filmDao.getAllByYearDesc()
-            return@withContext filmEntityList?.map { filmEntity -> filmEntity.toModel() }
-        }
-    }
-
-    suspend fun getAllByYearAsc(): List<FilmModel>? {
-        return withContext(Dispatchers.IO) {
-            val filmEntityList: List<FilmEntity>? = filmDao.getAllByYearAsc()
-            return@withContext filmEntityList?.map { filmEntity -> filmEntity.toModel() }
-        }
-    }
-
-    suspend fun getAllByRatingDesc(): List<FilmModel>? {
-        return withContext(Dispatchers.IO) {
-            val filmEntityList: List<FilmEntity>? = filmDao.getAllByRatingDesc()
-            return@withContext filmEntityList?.map { filmEntity -> filmEntity.toModel() }
-        }
-    }
-
-    suspend fun getAllByRatingAsc(): List<FilmModel>? {
-        return withContext(Dispatchers.IO) {
-            val filmEntityList: List<FilmEntity>? = filmDao.getAllByRatingAsc()
             return@withContext filmEntityList?.map { filmEntity -> filmEntity.toModel() }
         }
     }

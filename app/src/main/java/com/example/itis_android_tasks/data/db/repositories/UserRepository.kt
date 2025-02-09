@@ -1,11 +1,11 @@
-package com.itis.itistasks.data.db.repositories
+package com.example.itis_android_tasks.data.db.repositories
 
-import com.itis.itistasks.data.db.entities.UserEntity
-import com.itis.itistasks.data.db.entities.relations.UserFilmCrossRef
-import com.itis.itistasks.data.db.entities.relations.UserWithFavoriteFilms
-import com.itis.itistasks.data.model.FilmModel
-import com.itis.itistasks.data.model.UserModel
-import com.itis.itistasks.di.ServiceLocator
+import com.example.itis_android_tasks.data.db.entities.UserEntity
+import com.example.itis_android_tasks.data.db.entities.relations.UserFilmCrossRef
+import com.example.itis_android_tasks.data.db.entities.relations.UserWithFavoriteFilms
+import com.example.itis_android_tasks.data.model.FilmModel
+import com.example.itis_android_tasks.data.model.UserModel
+import com.example.itis_android_tasks.di.ServiceLocator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -23,7 +23,6 @@ object UserRepository {
                 email = user.email,
                 phone = user.phone,
                 password = user.password,
-                deletedDate = user.deletedDate
             )
             userDao.add(userEntity)
             return@withContext true
@@ -33,18 +32,6 @@ object UserRepository {
     suspend fun delete(user: UserEntity) {
         withContext(Dispatchers.IO) {
             userDao.delete(user)
-        }
-    }
-
-    suspend fun setDeletionDate(id: Int, deletionDate: Long) {
-        withContext(Dispatchers.IO) {
-            userDao.setDeletionDate(id, deletionDate)
-        }
-    }
-
-    suspend fun checkUserData(email: String, password: String): Boolean {
-        return withContext(Dispatchers.IO) {
-            return@withContext userDao.checkUserData(email, password)
         }
     }
 
@@ -104,7 +91,6 @@ object UserRepository {
             filmEntity.name == filmName
         }
     }
-
 
     suspend fun deleteFavorite(id: Int, filmName: String) {
         withContext(Dispatchers.IO) {

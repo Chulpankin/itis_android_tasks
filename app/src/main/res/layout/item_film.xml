@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textSize="12pt"
             android:layout_marginVertical="8dp"/>
-        
+
         <TextView
             android:id="@+id/tv_year"
             android:layout_width="match_parent"

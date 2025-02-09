@@ -1,8 +1,8 @@
-package com.itis.itistasks.di
+package com.example.itis_android_tasks.di
 
 import android.content.Context
 import androidx.room.Room
-import com.itis.itistasks.data.db.FilmsAppDatabase
+import com.example.itis_android_tasks.data.db.FilmsAppDatabase
 
 object ServiceLocator {
 
