@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/filmsFragment">
+
+    <fragment
+        android:id="@+id/filmsFragment"
+        android:name="com.example.itis_android_tasks.ui.fragments.FilmsFragment"
+        android:label="Films Fragment"
+        tools:layout="@layout/fragment_films">
+        <action
+            android:id="@+id/action_filmsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_filmsFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_filmsFragment_to_filmPageFragment"
+            app:destination="@id/filmPageFragment">
+            <argument
+                android:name="filmName"
+                app:argType="string"
+                app:nullable="false"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/addFilmFragment"
+        android:name="com.example.itis_android_tasks.ui.fragments.AddFilmFragment"
+        android:label="Add Film Fragment"
+        tools:layout="@layout/fragment_add_film">
+        <action
+            android:id="@+id/action_addFilmFragment_to_filmPageFragment"
+            app:destination="@id/filmPageFragment">
+            <argument
+                android:name="filmName"
+                app:argType="string"
+                app:nullable="false"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.itis_android_tasks.ui.fragments.FavoritesFragment"
+        android:label="Favorites Fragment"
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_to_filmPageFragment"
+            app:destination="@id/filmPageFragment">
+            <argument
+                android:name="filmName"
+                app:argType="string"
+                app:nullable="false"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.itis_android_tasks.ui.fragments.LogInFragment"
+        android:label="LogIn Fragment"
+        tools:layout="@layout/fragment_log_in">
+        <action
+            android:id="@+id/action_logInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_logInFragment_to_filmsFragment"
+            app:destination="@id/filmsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.itis_android_tasks.ui.fragments.SignUpFragment"
+        android:label="SignUp Fragment"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_signUpFragment_to_logInFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.itis_android_tasks.ui.fragments.ProfileFragment"
+        android:label="Profile Fragment"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_profileFragment_to_filmsFragment"
+            app:destination="@id/filmsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_logInFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/filmPageFragment"
+        android:name="com.example.itis_android_tasks.ui.fragments.FilmPageFragment"
+        android:label="Film Page Fragment"
+        tools:layout="@layout/fragment_film_page">
+        <argument
+            android:name="filmName"
+            app:argType="string"
+            app:nullable="false"/>
+    </fragment>
+
+</navigation>

@@ -1,0 +1,18 @@
+package com.example.itis_android_tasks.data.db.entities.relations
+
+import androidx.room.Embedded
+import androidx.room.Junction
+import androidx.room.Relation
+import com.example.itis_android_tasks.data.db.entities.FilmEntity
+import com.example.itis_android_tasks.data.db.entities.UserEntity
+
+data class UserWithFavoriteFilms(
+    @Embedded
+    val user: UserEntity,
+    @Relation(
+        parentColumn = "userId",
+        entityColumn = "filmId",
+        associateBy = Junction(UserFilmCrossRef::class)
+    )
+    val films: List<FilmEntity>
+)
