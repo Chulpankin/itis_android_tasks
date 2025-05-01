@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">itis_android_tasks</string>
+    <string name="app_name">BookClub</string>
+    <string name="book_cover">Обложка книги</string>
+    <string name="book_title_example">Название книги</string>
+    <string name="book_author_example">Автор</string>
+    <string name="book_year_example">2023</string>
+    <string name="books_loading_error">Error loading data. Try again later.</string>
+    <string name="book_desc_example">Полное описание книги…</string>
 </resources>

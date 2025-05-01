@@ -1,15 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.example.itis_android_tasks"
+    namespace = "com.itis.bookclub"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.itis_android_tasks"
-        minSdk = 24
+        applicationId = "com.itis.bookclub"
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -18,6 +20,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "BASE_URL", "\"https://openlibrary.org/\"")
     }
 
     buildTypes {
@@ -37,34 +41,44 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        buildConfig = true
+        viewBinding = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.fragment)
+    implementation(libs.material)
+    implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.room)
+
+    implementation(libs.coil)
+
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(libs.androidx.test.ext)
+    androidTestImplementation(libs.androidx.test.espresso)
+
+//    implementation(platform(libs.firebase.bom))
+//    implementation(libs.firebase.auth)
+//    implementation(libs.firebase.firestore)
+
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.runtime)
+
+    implementation(libs.viewbinding.delegate)
+
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.kotlinx.coroutines)
+
+    ksp(libs.dagger.compiler)
+    implementation(libs.dagger)
+
+
+    implementation(libs.retrofit)
+    implementation(libs.okhttp.logging)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
 }
