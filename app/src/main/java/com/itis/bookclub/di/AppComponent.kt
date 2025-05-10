@@ -2,6 +2,7 @@ package com.itis.bookclub.di
 
 import android.content.Context
 import com.itis.bookclub.data.di.DataModule
+import com.itis.bookclub.data.di.LocalModule
 import com.itis.bookclub.data.di.NetworkModule
 import com.itis.bookclub.domain.di.DomainModule
 import com.itis.bookclub.presentation.MainActivity
@@ -18,9 +19,11 @@ import javax.inject.Singleton
     modules = [
         DataModule::class,
         NetworkModule::class,
+        LocalModule::class,
         DomainModule::class,
         PresentationModule::class,
         ViewModelModule::class,
+        UtilsModule::class,
     ]
 )
 interface AppComponent {

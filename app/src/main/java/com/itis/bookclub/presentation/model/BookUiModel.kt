@@ -1,6 +1,6 @@
 package com.itis.bookclub.presentation.model
 
-class BookUiModel(
+data class BookUiModel(
     val id: String,
     val authorNames: String,
     val title: String,
