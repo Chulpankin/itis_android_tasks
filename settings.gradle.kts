@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "itis_android_tasks"
+rootProject.name = "BookClub"
 include(":app")
  
