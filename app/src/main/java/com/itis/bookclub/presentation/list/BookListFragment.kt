@@ -2,66 +2,107 @@ package com.itis.bookclub.presentation.list
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.itis.bookclub.R
 import com.itis.bookclub.databinding.FragmentBookListBinding
 import com.itis.bookclub.presentation.BaseFragment
 import com.itis.bookclub.presentation.details.BookDetailsFragment
+import com.itis.bookclub.presentation.utils.toUiModel
 import com.itis.bookclub.util.appComponent
-import com.itis.bookclub.util.observe
 import javax.inject.Inject
 import dagger.Lazy
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class BookListFragment : BaseFragment(R.layout.fragment_book_list) {
 
     @Inject
     lateinit var factory: Lazy<ViewModelProvider.Factory>
 
-    private val viewModel: BookListViewModel by viewModels {
-        factory.get()
-    }
+    private val viewModel: BookListViewModel by viewModels { factory.get() }
 
-    private val viewBinding: FragmentBookListBinding
-        by viewBinding(FragmentBookListBinding::bind)
+    private val viewBinding: FragmentBookListBinding by viewBinding(FragmentBookListBinding::bind)
 
-    private var adapter: BookAdapter? = null
+    private var adapter: BookPagingAdapter? = null
 
     override fun onAttach(context: Context) {
         requireContext().appComponent.inject(fragment = this)
         super.onAttach(context)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = viewBinding.root
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observe()
+        adapter = BookPagingAdapter(onItemClicked = ::onBookClicked)
+        viewBinding.rvBooks.adapter = adapter?.withLoadStateFooter(
+            footer = PagingLoadStateAdapter { adapter?.retry() }
+        )
 
         viewBinding.rvBooks.layoutManager = LinearLayoutManager(context)
 
-        adapter = BookAdapter(onItemClicked = ::onBookClicked)
-        viewBinding.rvBooks.adapter = adapter
+        viewBinding.swipeRefresh.setOnRefreshListener {
+            adapter?.refresh()
+        }
+
+        adapter?.addLoadStateListener { loadState ->
+            val isRefreshing = loadState.source.refresh is LoadState.Loading
+            viewBinding.swipeRefresh.isRefreshing = isRefreshing
+        }
+
+        viewBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { viewModel.setQuery(it.trim()) }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = false
+        })
+
+        observe()
     }
+
+
 
     private fun onBookClicked(bookId: String) {
         parentFragmentManager.beginTransaction()
-            .replace(
-                R.id.container,
-                BookDetailsFragment.newInstance(bookId)
-            )
+            .replace(R.id.container, BookDetailsFragment.newInstance(bookId))
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun observe() {
+        with(viewModel) {
+            lifecycleScope.launch {
+                books.collectLatest { pagingData ->
+                    adapter?.submitData(pagingData)
+                }
+            }
+
+            isLoading.observe {
+                setLoadingVisibility(it)
+            }
+
+            isError.observe {
+                setErrorVisibility(it)
+            }
+        }
+    }
+
+
+    private fun setLoadingVisibility(isVisible: Boolean) {
+        viewBinding.loading.root.visibility = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private fun setErrorVisibility(isVisible: Boolean) {
@@ -72,33 +113,6 @@ class BookListFragment : BaseFragment(R.layout.fragment_book_list) {
         }
     }
 
-    private fun setLoadingVisibility(isVisible: Boolean) {
-        viewBinding.loading.root.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-    }
-
-    private fun observe() {
-        with(viewModel) {
-            setErrorVisibility(isVisible = false)
-            setLoadingVisibility(isVisible = false)
-            booksList.observe(fragmentLifecycleOwner = this@BookListFragment) {
-                adapter?.setList(it)
-            }
-
-            isLoading.observe {
-                setErrorVisibility(isVisible = false)
-                setLoadingVisibility(isVisible = it)
-            }
-
-            isError.observe {
-                setErrorVisibility(isVisible = it)
-                setLoadingVisibility(isVisible = false)
-            }
-        }
-    }
 
     companion object {
         fun newInstance() = BookListFragment()

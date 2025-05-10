@@ -14,7 +14,7 @@ interface BookApi {
         @Query(value = "limit") limit: Int
     ): BookListResponse?
 
-    @GET("work")
+    @GET("works/{id}.json")
     suspend fun getBookById(
         @Path(value = "id") id: String
     ): BookDetailsResponse?

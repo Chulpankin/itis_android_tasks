@@ -2,23 +2,22 @@ package com.itis.bookclub.presentation.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.itis.bookclub.domain.usecase.GetBooksUseCase
 import com.itis.bookclub.presentation.model.BookUiModel
 import com.itis.bookclub.presentation.utils.toUiModel
-import com.itis.bookclub.util.AppExceptionHandler
-import com.itis.bookclub.util.runSuspendCatching
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class BookListViewModel @Inject constructor(
-    private val getBooksUseCase: GetBooksUseCase,
-    private val exceptionHandler: AppExceptionHandler,
+    private val getBooksUseCase: GetBooksUseCase
 ) : ViewModel() {
 
-    private val _booksList = MutableStateFlow<List<BookUiModel>>(emptyList())
-    val booksList = _booksList.asStateFlow()
+    private val queryFlow = MutableStateFlow(DEFAULT_QUERY)
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
@@ -26,24 +25,25 @@ class BookListViewModel @Inject constructor(
     private val _isError = MutableStateFlow(false)
     val isError = _isError.asStateFlow()
 
-    init {
-        loadList()
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    val books: StateFlow<PagingData<BookUiModel>> = queryFlow
+        .debounce(300)
+        .distinctUntilChanged()
+        .flatMapLatest { query ->
+            getBooksUseCase(query).map { pagingData -> pagingData.map { it.toUiModel() } }
+        }
+        .cachedIn(viewModelScope)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            PagingData.empty()
+        )
+
+    fun setQuery(query: String) {
+        queryFlow.value = query
     }
 
-    private fun loadList() {
-        viewModelScope.launch {
-            _booksList.value = emptyList()
-            _isLoading.value = true
-            _isError.value = false
-
-            runSuspendCatching(exceptionHandler) {
-                //example data
-                getBooksUseCase.invoke(query = "dictionary", page = 1)
-            }.onSuccess {
-                _booksList.value = it.map { domainModel -> domainModel.toUiModel() }
-            }.onFailure {
-                _isError.value = true
-            }
-        }
+    companion object {
+        private const val DEFAULT_QUERY = "dictionary"
     }
 }

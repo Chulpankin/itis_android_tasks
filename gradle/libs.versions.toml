@@ -2,7 +2,9 @@
 kotlin = "2.0.0"
 agp = "8.4.0"
 google-services = "4.4.1"
+paging-runtime-ktx = "3.3.6"
 retrofit2-kotlinx-serialization-converter = "1.0.0"
+room-paging = "2.7.1"
 secrets-plugin = "2.0.1"
 ksp = "2.0.0-1.0.21"
 
@@ -31,6 +33,7 @@ firebase-firestore = "25.0.0"
 viewbinding-delegate = "1.5.9"
 
 dagger = "2.51"
+swiperefreshlayout = "1.1.0"
 
 [libraries]
 # AndroidX
@@ -38,9 +41,13 @@ androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
 androidx-legacy = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacy" }
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging-runtime-ktx" }
 androidx-room = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 # UI
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-paging" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room-paging" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-paging" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -80,6 +87,7 @@ viewbinding-delegate = { module = "com.github.kirich1409:viewbindingpropertydele
 junit = { module = "junit:junit", version.ref = "junit" }
 androidx-test-ext = { module = "androidx.test.ext:junit", version.ref = "ext-junit" }
 androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
