@@ -9,12 +9,16 @@ import com.itis.bookclub.data.local.entity.BookEntity
 
 @Dao
 interface BookDao {
-    @Query("SELECT * FROM books")
-    fun pagingSource(): PagingSource<Int, BookEntity>
+    @Query("SELECT * FROM books WHERE `query` = :query")
+    fun pagingSource(query: String): PagingSource<Int, BookEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(books: List<BookEntity>)
 
     @Query("DELETE FROM books")
     suspend fun clearAll()
+
+    @Query("DELETE FROM books WHERE 'query' = :query")
+    suspend fun clearByQuery(query: String)
+
 }

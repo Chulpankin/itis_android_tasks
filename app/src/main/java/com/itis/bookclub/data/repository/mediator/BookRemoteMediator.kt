@@ -12,6 +12,7 @@ import com.itis.bookclub.data.local.dao.SearchQueryCacheDao
 import com.itis.bookclub.data.local.entity.BookEntity
 import com.itis.bookclub.data.local.entity.SearchQueryCacheEntity
 import com.itis.bookclub.data.util.toEntity
+import com.itis.bookclub.util.Constants
 import com.itis.bookclub.util.Toaster
 
 @OptIn(ExperimentalPagingApi::class)
@@ -21,8 +22,6 @@ class BookRemoteMediator(
     private val bookDao: BookDao,
     private val cacheDao: SearchQueryCacheDao,
     private val toaster: Toaster,
-    private val shouldNotify: Boolean,
-    private val cacheMinutes: Int = 10
 ) : RemoteMediator<Int, BookEntity>() {
 
     private var didNotify = false
@@ -35,17 +34,15 @@ class BookRemoteMediator(
 
         val now = System.currentTimeMillis()
         val cache = cacheDao.getCache(query)
-        val validUntil = cache?.lastRequestedAt?.plus(cacheMinutes * 60 * 1000) ?: 0
+        val validUntil = cache?.lastRequestedAt?.plus(Constants.CACHE_MINUTES) ?: 0
         val shouldUseCache = if (cache != null) {
             val isFresh = now <= validUntil
             val queriesAfter = cacheDao.countQueriesAfter(cache.index)
             isFresh && queriesAfter <= 2
         } else false
 
-        val fromCache = loadType == LoadType.REFRESH && shouldUseCache
-
-        if (fromCache) {
-            if (shouldNotify && !didNotify) {
+        if (shouldUseCache) {
+            if (!didNotify) {
                 toaster.showFromCache()
                 didNotify = true
             }
@@ -55,19 +52,16 @@ class BookRemoteMediator(
         val nextIndex = (cacheDao.getLatestIndex() ?: 0) + 1
         cacheDao.upsert(SearchQueryCacheEntity(query, now, nextIndex))
 
-        val page = 1
-
         return try {
-            val response = bookApi.getBooks(query, page, state.config.pageSize)
-            val books = response?.bookList.orEmpty().mapNotNull { it.toEntity() }
+            val page = 1
+            val response = bookApi.getBooks(query, page, Constants.PAGE_LIMIT)
+            val books = response?.bookList.orEmpty().mapNotNull { it.toEntity(query) }
 
-            if (loadType == LoadType.REFRESH) {
-                bookDao.clearAll()
-            }
+            bookDao.clearByQuery(query)
 
             bookDao.insertAll(books)
 
-            if (shouldNotify && !didNotify) {
+            if (!didNotify) {
                 toaster.showFromApi()
                 didNotify = true
             }

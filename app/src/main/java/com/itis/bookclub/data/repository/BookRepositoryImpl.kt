@@ -28,9 +28,7 @@ class BookRepositoryImpl @Inject constructor(
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getBooks(query: String): Flow<PagingData<BookDomainModel>> {
-        val pagingSourceFactory = { bookDao.pagingSource() }
-
-        val shouldNotifyUser = true
+        val pagingSourceFactory = { bookDao.pagingSource(query) }
 
         return Pager(
             config = PagingConfig(pageSize = Constants.PAGE_LIMIT),
@@ -40,7 +38,6 @@ class BookRepositoryImpl @Inject constructor(
                 bookDao = bookDao,
                 cacheDao = cacheDao,
                 toaster = toaster,
-                shouldNotify = shouldNotifyUser,
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow.map { pagingData ->

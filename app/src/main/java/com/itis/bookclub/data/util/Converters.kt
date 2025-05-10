@@ -24,7 +24,7 @@ fun BookDetailsResponse.toDomainModel() =
         description = requireNotNull(description?.value),
     )
 
-fun BookResponse.toEntity(): BookEntity? {
+fun BookResponse.toEntity(query: String = ""): BookEntity? {
     val id = key?.removePrefix("/works/") ?: return null
     val titleSafe = title ?: return null
     val coverSafe = coverId?.toOpenLibraryCoverUrl() ?: ""
@@ -37,7 +37,8 @@ fun BookResponse.toEntity(): BookEntity? {
         authorNames = authorNames,
         authorIds = authorIds,
         publishedYear = firstPublishedYear,
-        coverUrl = coverSafe
+        coverUrl = coverSafe,
+        query = query,
     )
 }
 
