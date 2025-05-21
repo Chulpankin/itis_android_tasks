@@ -2,10 +2,13 @@ package com.itis.bookclub.di
 
 import android.content.Context
 import com.itis.bookclub.data.di.DataModule
+import com.itis.bookclub.data.di.FirebaseModule
 import com.itis.bookclub.data.di.LocalModule
 import com.itis.bookclub.data.di.NetworkModule
 import com.itis.bookclub.domain.di.DomainModule
 import com.itis.bookclub.presentation.MainActivity
+import com.itis.bookclub.presentation.auth.signin.SignInFragment
+import com.itis.bookclub.presentation.auth.signup.SignUpFragment
 import com.itis.bookclub.presentation.details.BookDetailsFragment
 import com.itis.bookclub.presentation.details.BookDetailsViewModel
 import com.itis.bookclub.presentation.di.PresentationModule
@@ -24,6 +27,7 @@ import javax.inject.Singleton
         PresentationModule::class,
         ViewModelModule::class,
         UtilsModule::class,
+        FirebaseModule::class,
     ]
 )
 interface AppComponent {
@@ -40,6 +44,8 @@ interface AppComponent {
     fun inject(activity: MainActivity)
     fun inject(fragment: BookListFragment)
     fun inject(fragment: BookDetailsFragment)
+    fun inject(fragment: SignInFragment)
+    fun inject(fragment: SignUpFragment)
 
     fun bookDetailsViewModel(): BookDetailsViewModel.Factory
 }

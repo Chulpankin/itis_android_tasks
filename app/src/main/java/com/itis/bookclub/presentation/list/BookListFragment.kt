@@ -8,21 +8,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.itis.bookclub.R
 import com.itis.bookclub.databinding.FragmentBookListBinding
-import com.itis.bookclub.presentation.BaseFragment
-import com.itis.bookclub.presentation.details.BookDetailsFragment
-import com.itis.bookclub.presentation.utils.toUiModel
+import com.itis.bookclub.presentation.base.BaseFragment
 import com.itis.bookclub.util.appComponent
-import javax.inject.Inject
 import dagger.Lazy
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookListFragment : BaseFragment(R.layout.fragment_book_list) {
+class BookListFragment : BaseFragment() {
 
     @Inject
     lateinit var factory: Lazy<ViewModelProvider.Factory>
@@ -32,6 +29,10 @@ class BookListFragment : BaseFragment(R.layout.fragment_book_list) {
     private val viewBinding: FragmentBookListBinding by viewBinding(FragmentBookListBinding::bind)
 
     private var adapter: BookPagingAdapter? = null
+
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_book_list
+    }
 
     override fun onAttach(context: Context) {
         requireContext().appComponent.inject(fragment = this)
@@ -69,13 +70,8 @@ class BookListFragment : BaseFragment(R.layout.fragment_book_list) {
         observe()
     }
 
-
-
     private fun onBookClicked(bookId: String) {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.container, BookDetailsFragment.newInstance(bookId))
-            .addToBackStack(null)
-            .commit()
+        //TODO
     }
 
     private fun observe() {

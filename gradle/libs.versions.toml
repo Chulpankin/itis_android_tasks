@@ -1,7 +1,8 @@
 [versions]
+compose-bom = "2024.05.00"
 kotlin = "2.0.0"
-agp = "8.4.0"
-google-services = "4.4.1"
+agp = "8.5.2"
+google-services = "4.4.2"
 paging-runtime-ktx = "3.3.6"
 retrofit2-kotlinx-serialization-converter = "1.0.0"
 room-paging = "2.7.1"
@@ -14,8 +15,8 @@ fragment = "1.7.1"
 material = "1.12.0"
 navigation = "2.7.7"
 legacy = "1.0.0"
-room = "2.7.0"
-lifecycle = "2.8.0"
+room = "2.7.1"
+lifecycle = "2.7.0"
 coroutines = "1.8.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
@@ -30,13 +31,22 @@ firebase-bom = "33.0.0"
 firebase-auth = "23.0.0"
 firebase-firestore = "25.0.0"
 
+ui-graphics = "1.6.0"
 viewbinding-delegate = "1.5.9"
 
 dagger = "2.51"
 swiperefreshlayout = "1.1.0"
 
+compose = "1.6.0"
+compose-activity = "1.8.0"
+compose-viewmodel = "2.6.2"
+compose-navigation = "2.7.4"
+compose-material3 = "1.2.0"
+ads-mobile-sdk = "0.15.1-alpha01"
+
 [libraries]
 # AndroidX
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
@@ -45,12 +55,25 @@ androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", v
 androidx-room = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 # UI
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-paging" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room-paging" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-paging" }
+androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics", version.ref = "ui-graphics" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
+androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
+androidx-compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose" }
+androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "compose-activity" }
+androidx-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-viewmodel" }
+androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
 
 # Navigation
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
@@ -62,6 +85,10 @@ kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 # Lifecycle
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
 
 # Network
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
@@ -88,6 +115,7 @@ junit = { module = "junit:junit", version.ref = "junit" }
 androidx-test-ext = { module = "androidx.test.ext:junit", version.ref = "ext-junit" }
 androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
+ads-mobile-sdk = { group = "com.google.android.libraries.ads.mobile.sdk", name = "ads-mobile-sdk", version.ref = "ads-mobile-sdk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

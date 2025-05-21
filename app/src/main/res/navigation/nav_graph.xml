@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.itis.bookclub.presentation.auth.signin.SignInFragment"
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_signInFragment_to_bookListFragment"
+            app:destination="@id/bookListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookListFragment"
+        android:name="com.itis.bookclub.presentation.list.BookListFragment"
+        android:label="BookListFragment" />
+    <fragment
+        android:id="@+id/bookDetailsFragment"
+        android:name="com.itis.bookclub.presentation.details.BookDetailsFragment"
+        android:label="BookDetailsFragment">
+
+        <argument
+            android:name="bookId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.itis.bookclub.presentation.auth.signup.SignUpFragment"
+        android:label="SignUpFragment" />
+
+
+</navigation>

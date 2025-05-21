@@ -1,11 +1,9 @@
 package com.itis.bookclub.data.repository.mediator
 
-import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.itis.bookclub.R
 import com.itis.bookclub.data.api.BookApi
 import com.itis.bookclub.data.local.dao.BookDao
 import com.itis.bookclub.data.local.dao.SearchQueryCacheDao

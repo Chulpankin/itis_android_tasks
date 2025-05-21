@@ -9,12 +9,12 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.itis.bookclub.R
 import com.itis.bookclub.databinding.FragmentBookDetailsBinding
-import com.itis.bookclub.presentation.BaseFragment
+import com.itis.bookclub.presentation.base.BaseFragment
 import com.itis.bookclub.presentation.model.BookDetailsUiModel
 import com.itis.bookclub.util.appComponent
 import javax.inject.Inject
 
-class BookDetailsFragment : BaseFragment(R.layout.fragment_book_details) {
+class BookDetailsFragment : BaseFragment() {
 
     @Inject
     lateinit var vmFactory: BookDetailsViewModel.Factory
@@ -24,6 +24,10 @@ class BookDetailsFragment : BaseFragment(R.layout.fragment_book_details) {
             assistedFactory = vmFactory,
             id = requireArguments().getString(BOOK_ID).orEmpty()
         )
+    }
+
+    override fun getLayoutId(): Int? {
+        return R.layout.fragment_book_details
     }
 
     override fun onAttach(context: Context) {
