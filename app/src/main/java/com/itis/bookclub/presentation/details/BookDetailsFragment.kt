@@ -2,9 +2,7 @@ package com.itis.bookclub.presentation.details
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -35,12 +33,6 @@ class BookDetailsFragment : BaseFragment(R.layout.fragment_book_details) {
 
     private val viewBinding: FragmentBookDetailsBinding
             by viewBinding(FragmentBookDetailsBinding::bind)
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = viewBinding.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,20 +66,16 @@ class BookDetailsFragment : BaseFragment(R.layout.fragment_book_details) {
 
     private fun observe() {
         with(viewModel) {
-            setErrorVisibility(isVisible = false)
-            setLoadingVisibility(isVisible = false)
             book.observe {
                 it?.let { data -> setData(data) }
             }
 
             isLoading.observe {
-                setErrorVisibility(isVisible = false)
                 setLoadingVisibility(isVisible = it)
             }
 
             isError.observe {
                 setErrorVisibility(isVisible = it)
-                setLoadingVisibility(isVisible = false)
             }
         }
     }

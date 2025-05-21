@@ -24,7 +24,8 @@ class NetworkModule {
 
         if (BuildConfig.DEBUG) {
             clientBuilder.addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.BASIC
+                //level = HttpLoggingInterceptor.Level.BODY
             })
         }
         return clientBuilder.build()

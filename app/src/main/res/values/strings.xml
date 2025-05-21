@@ -6,4 +6,10 @@
     <string name="book_year_example">2023</string>
     <string name="books_loading_error">Error loading data. Try again later.</string>
     <string name="book_desc_example">Полное описание книги…</string>
+    <string name="repeat">Повторить</string>
+    <string name="searching_books">Поиск книг</string>
+    <string name="from_api">Загружено из API</string>
+    <string name="from_cache">Загружено из кэша</string>
+    <string name="loaded_from_api">Loaded from API</string>
+    <string name="loaded_from_cache">Loaded from cache</string>
 </resources>

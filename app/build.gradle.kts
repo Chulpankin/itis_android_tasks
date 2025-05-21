@@ -53,17 +53,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.navigation.fragment)
-    implementation(libs.androidx.room)
 
     implementation(libs.coil)
+    implementation(libs.androidx.swiperefreshlayout)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.androidx.test.espresso)
-
-//    implementation(platform(libs.firebase.bom))
-//    implementation(libs.firebase.auth)
-//    implementation(libs.firebase.firestore)
 
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.runtime)
@@ -81,4 +77,10 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
+
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.room.paging)
+    implementation(libs.androidx.room)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
 }

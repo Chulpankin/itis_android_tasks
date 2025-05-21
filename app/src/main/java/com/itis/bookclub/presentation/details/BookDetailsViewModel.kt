@@ -1,5 +1,6 @@
 package com.itis.bookclub.presentation.details
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -42,7 +43,9 @@ class BookDetailsViewModel @AssistedInject constructor(
                 getBookDetailsUseCase.invoke(id = id)
             }.onSuccess {
                 _book.value = it.toUiModel()
+                _isLoading.value = false
             }.onFailure {
+                Log.e("BookDetailsViewModel", it.message.toString())
                 _isError.value = true
             }
         }
