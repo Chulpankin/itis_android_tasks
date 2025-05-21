@@ -33,4 +33,36 @@ sealed class AppException(
         message: String? = null,
         cause: Throwable? = null
     ) : AppException(message, cause)
+
+    class AuthInvalidCredentialsException(
+        message: String
+    ) : AppException(message)
+
+    class AuthUserDisabledException(
+        message: String
+    ) : AppException(message)
+
+    class AuthUnknownException(
+        message: String
+    ) : AppException(message)
+
+    class FirestorePermissionDeniedException(
+        message: String
+    ) : AppException(message)
+
+    class FirestoreServiceUnavailableException(
+        message: String
+    ) : AppException(message)
+
+    class FirestoreUnknownException(
+        message: String
+    ) : AppException(message)
+
+    class FirebaseGenericException(
+        message: String
+    ) : AppException(message)
+
+    class GeneralException(
+        message: String
+    ) : AppException(message)
 }
