@@ -1,15 +1,28 @@
 <resources>
     <string name="app_name">BookClub</string>
-    <string name="book_cover">Обложка книги</string>
-    <string name="book_title_example">Название книги</string>
-    <string name="book_author_example">Автор</string>
+    <string name="book_cover">Book cover</string>
+    <string name="book_title_example">Book title</string>
+    <string name="book_author_example">Author</string>
     <string name="book_year_example">2023</string>
-    <string name="books_loading_error">Error loading data. Try again later.</string>
-    <string name="book_desc_example">Полное описание книги…</string>
-    <string name="repeat">Повторить</string>
-    <string name="searching_books">Поиск книг</string>
-    <string name="from_api">Загружено из API</string>
-    <string name="from_cache">Загружено из кэша</string>
+    <string name="books_loading_error">Error loading data. Please try again later.</string>
+    <string name="book_desc_example">Full book description</string>
+    <string name="repeat">Retry</string>
+    <string name="searching_books">Searching books</string>
+    <string name="from_api">Loaded from API</string>
+    <string name="from_cache">Loaded from cache</string>
     <string name="loaded_from_api">Loaded from API</string>
     <string name="loaded_from_cache">Loaded from cache</string>
+
+    <string name="welcome_back">Welcome back!</string>
+    <string name="login_desc">Log in to your account to start reading books.</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="arrow">Arrow</string>
+    <string name="terms_of_use_text">By continuing, you agree to our Terms of Use and Privacy Policy.</string>
+    <string name="toggle_password_visibility">Toggle password visibility</string>
+    <string name="don_t_have_an_account">Don\'t have an account? </string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign in</string>
+    <string name="name">Name</string>
 </resources>
