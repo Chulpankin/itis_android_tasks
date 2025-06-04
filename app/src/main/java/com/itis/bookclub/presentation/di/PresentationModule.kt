@@ -1,16 +1,26 @@
 package com.itis.bookclub.presentation.di
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.itis.bookclub.di.keys.ViewModelKey
+import com.itis.bookclub.presentation.MainActivity
 import com.itis.bookclub.presentation.auth.signin.SignInViewModel
 import com.itis.bookclub.presentation.auth.signup.SignUpViewModel
 import com.itis.bookclub.presentation.list.BookListViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import javax.inject.Singleton
 
 @Module
 class PresentationModule {
+
+    @Provides
+    @Singleton
+    fun provideNavController(context: Context): NavController? {
+        return (context as MainActivity).navController
+    }
 
     @[Provides IntoMap ViewModelKey(BookListViewModel::class)]
     fun provideBookListViewModel(viewModel: BookListViewModel): ViewModel = viewModel

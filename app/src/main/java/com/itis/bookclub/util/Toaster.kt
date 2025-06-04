@@ -8,17 +8,22 @@ import javax.inject.Singleton
 
 @Singleton
 class Toaster @Inject constructor(
-    private val context: Context
+    private val context: Context,
 ) {
-    private fun show(message: String) {
+    private fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     fun showFromApi() {
-        Toast.makeText(context, context.getString(R.string.loaded_from_api), Toast.LENGTH_SHORT).show()
+        showMessage(context.getString(R.string.loaded_from_api))
     }
 
     fun showFromCache() {
-        Toast.makeText(context, context.getString(R.string.loaded_from_cache), Toast.LENGTH_SHORT).show()
+        showMessage(context.getString(R.string.loaded_from_cache))
+    }
+    
+    fun showAuthError() {
+        showMessage(context.getString(R.string.session_is_expired))
+        
     }
 }

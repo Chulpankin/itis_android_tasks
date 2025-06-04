@@ -1,4 +1,4 @@
-package com.itis.bookclub.presentation.auth.signin.combosable
+package com.itis.bookclub.presentation.auth.signin.composable
 
 import androidx.compose.runtime.Composable
 import com.itis.bookclub.presentation.auth.composable.LoadingScreen

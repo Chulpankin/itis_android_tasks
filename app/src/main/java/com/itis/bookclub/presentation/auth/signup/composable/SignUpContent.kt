@@ -21,7 +21,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.itis.bookclub.R
-import com.itis.bookclub.presentation.auth.signin.combosable.TitleText
+import com.itis.bookclub.presentation.auth.signin.composable.TitleText
 import com.itis.bookclub.presentation.themes.OnSurfaceTextAlpha
 
 @Composable
@@ -72,7 +72,7 @@ internal fun SignUpContent(
             style = MaterialTheme.typography.bodyLarge.copy(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = OnSurfaceTextAlpha)
             ),
-            modifier = Modifier.fillMaxWidth().clickable { onSignUpClick() }
+            modifier = Modifier.fillMaxWidth().clickable { onSignInClick() }
         )
         Spacer(modifier = Modifier.fillMaxHeight(fraction = 0.74f))
         Text(

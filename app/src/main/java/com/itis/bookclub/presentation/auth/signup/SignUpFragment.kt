@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import com.itis.bookclub.R
 import com.itis.bookclub.presentation.auth.signup.composable.SignUpScreen
 import com.itis.bookclub.presentation.base.BaseFragment
 import com.itis.bookclub.presentation.themes.BookClubAppTheme
@@ -36,7 +38,10 @@ class SignUpFragment : BaseFragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 BookClubAppTheme {
-                    SignUpScreen(viewModel = viewModel)
+                    SignUpScreen(
+                        viewModel = viewModel,
+                        onNavigateToSignIn = { findNavController().navigate(R.id.signInFragment) }
+                    )
                 }
             }
         }

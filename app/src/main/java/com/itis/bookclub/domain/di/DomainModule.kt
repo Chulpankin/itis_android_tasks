@@ -1,5 +1,7 @@
 package com.itis.bookclub.domain.di
 
+import android.app.Application
+import androidx.core.app.NotificationManagerCompat
 import com.itis.bookclub.util.AppExceptionHandler
 import dagger.Module
 import dagger.Provides
@@ -16,4 +18,10 @@ class DomainModule {
     @Provides
     @Singleton
     fun provideExceptionHandler(): AppExceptionHandler = AppExceptionHandler()
+
+    @Provides
+    @Singleton
+    fun provideNotificationManager(app: Application): NotificationManagerCompat {
+        return NotificationManagerCompat.from(app)
+    }
 }
