@@ -14,7 +14,9 @@ abstract class BaseViewModel<State, Event, Action>(
 
     protected val _uiState = MutableStateFlow(initialState)
 
-    protected val _actionsFlow = MutableSharedFlow<Action>()
+    protected val _actionsFlow = MutableSharedFlow<Action>(
+        extraBufferCapacity = 1
+    )
 
     val uiState: StateFlow<State>
         get() = _uiState.asStateFlow()

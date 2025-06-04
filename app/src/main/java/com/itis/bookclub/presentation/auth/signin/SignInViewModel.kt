@@ -1,24 +1,26 @@
 package com.itis.bookclub.presentation.auth.signin
 
 import androidx.lifecycle.viewModelScope
+import com.itis.bookclub.domain.usecase.GetUserIdUseCase
 import com.itis.bookclub.domain.usecase.IsUserAuthorizedUseCase
 import com.itis.bookclub.domain.usecase.SignInUseCase
+import com.itis.bookclub.domain.utils.CrashlyticsService
+import com.itis.bookclub.domain.utils.ScreenEvent
 import com.itis.bookclub.presentation.auth.signin.mvi.SignInAction
-import com.itis.bookclub.presentation.auth.signin.mvi.SignInState
 import com.itis.bookclub.presentation.auth.signin.mvi.SignInEvent
+import com.itis.bookclub.presentation.auth.signin.mvi.SignInState
 import com.itis.bookclub.presentation.base.BaseViewModel
-import com.itis.bookclub.presentation.utils.Navigator
-import com.itis.bookclub.util.AppException
 import com.itis.bookclub.util.AppExceptionHandler
 import com.itis.bookclub.util.runSuspendCatching
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SignInViewModel @Inject constructor(
-    private val navigator: Navigator,
     private val isUserAuthorizedUseCase: IsUserAuthorizedUseCase,
     private val signInUseCase: SignInUseCase,
-    private val appExceptionHandler: AppExceptionHandler
+    private val getUserIdUseCase: GetUserIdUseCase,
+    private val appExceptionHandler: AppExceptionHandler,
+    private val crashlyticsService: CrashlyticsService
 ) : BaseViewModel<SignInState, SignInEvent, SignInAction>(
     initialState = SignInState()
 ) {
@@ -30,7 +32,10 @@ class SignInViewModel @Inject constructor(
     override fun obtainEvent(event: SignInEvent) {
         when (event) {
             is SignInEvent.SignInClick -> signIn()
-            is SignInEvent.SignUpClick -> navigator.navigateToSignUp()
+            is SignInEvent.SignUpClick -> {
+                crashlyticsService.logScreenEvent(ScreenEvent.SIGN_UP, "from sign up click")
+                _actionsFlow.tryEmit(SignInAction.NavigateToSignUp)
+            }
             is SignInEvent.EmailChanged -> updateEmail(event.email)
             is SignInEvent.PasswordChanged -> updatePassword(event.password)
         }
@@ -41,7 +46,8 @@ class SignInViewModel @Inject constructor(
             runSuspendCatching(appExceptionHandler) {
                 isUserAuthorizedUseCase.invoke()
             }.onSuccess {
-                if (it) navigator.navigateToMain()
+                crashlyticsService.logScreenEvent(ScreenEvent.MAIN, "from init")
+                if (it) _actionsFlow.emit(SignInAction.NavigateToMain)
             }
         }
     }
@@ -54,11 +60,12 @@ class SignInViewModel @Inject constructor(
                 signInUseCase.invoke(_uiState.value.email, _uiState.value.password)
             }.onSuccess {
                 _uiState.value = _uiState.value.copy(isLoading = false)
-                navigator.navigateToMain()
+                crashlyticsService.logScreenEvent(ScreenEvent.MAIN, "from sign in")
+                _actionsFlow.emit(SignInAction.NavigateToMain)
             }.onFailure {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    isInvalidCredentials = it is AppException.AuthInvalidCredentialsException
+                    isInvalidCredentials = true
                 )
                 _actionsFlow.emit(SignInAction.ShowMessage(it.message.orEmpty()))
             }

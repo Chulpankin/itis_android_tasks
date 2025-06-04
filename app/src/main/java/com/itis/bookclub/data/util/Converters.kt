@@ -2,9 +2,11 @@ package com.itis.bookclub.data.util
 
 import BookDetailsResponse
 import com.itis.bookclub.data.local.entity.BookEntity
+import com.itis.bookclub.data.local.entity.PushEntity
 import com.itis.bookclub.data.model.BookResponse
 import com.itis.bookclub.domain.model.BookDetailsDomainModel
 import com.itis.bookclub.domain.model.BookDomainModel
+import com.itis.bookclub.domain.model.PushDomainModel
 
 fun BookResponse.toDomainModel() =
     BookDomainModel(
@@ -52,5 +54,13 @@ fun BookEntity.toDomainModel() =
         coverUrl = coverUrl
     )
 
+
+fun PushDomainModel.toEntity() =
+    PushEntity(
+        id = this.id,
+        category = this.category,
+        payload = this.payload,
+        timestamp = this.timestamp
+    )
 
 fun String.toOpenLibraryCoverUrl() = "https://covers.openlibrary.org/b/id/$this.jpg"

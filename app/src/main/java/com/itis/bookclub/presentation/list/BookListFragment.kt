@@ -3,16 +3,20 @@ package com.itis.bookclub.presentation.list
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.itis.bookclub.R
 import com.itis.bookclub.databinding.FragmentBookListBinding
 import com.itis.bookclub.presentation.base.BaseFragment
+import com.itis.bookclub.presentation.details.BookDetailsFragment.Companion.BOOK_ID
 import com.itis.bookclub.util.appComponent
 import dagger.Lazy
 import kotlinx.coroutines.flow.collectLatest
@@ -71,7 +75,11 @@ class BookListFragment : BaseFragment() {
     }
 
     private fun onBookClicked(bookId: String) {
-        //TODO
+        if (viewModel.isDetailsEnabled.value) {
+            findNavController().navigate(R.id.bookDetailsFragment, bundleOf(BOOK_ID to bookId))
+        } else {
+            showToast("Book details are temporarily unavailable")
+        }
     }
 
     private fun observe() {
@@ -109,6 +117,9 @@ class BookListFragment : BaseFragment() {
         }
     }
 
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
 
     companion object {
         fun newInstance() = BookListFragment()

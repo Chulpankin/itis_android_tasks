@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.secrets.plugin)
     id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.crashlytics)
 
 }
 
@@ -106,6 +107,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.config)
 
     // UI
     implementation(libs.coil)

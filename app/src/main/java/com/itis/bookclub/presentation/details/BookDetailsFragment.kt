@@ -26,7 +26,7 @@ class BookDetailsFragment : BaseFragment() {
         )
     }
 
-    override fun getLayoutId(): Int? {
+    override fun getLayoutId(): Int {
         return R.layout.fragment_book_details
     }
 

@@ -1,4 +1,4 @@
-package com.itis.bookclub.presentation.auth.signin.combosable
+package com.itis.bookclub.presentation.auth.signin.composable
 
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -10,12 +10,20 @@ import com.itis.bookclub.presentation.auth.signin.SignInViewModel
 import com.itis.bookclub.presentation.auth.signin.mvi.SignInEvent
 
 @Composable
-internal fun SignInScreen(viewModel: SignInViewModel) {
+internal fun SignInScreen(
+    viewModel: SignInViewModel,
+    onNavigateToSignUp: () -> Unit,
+    onNavigateToMain: () -> Unit,
+) {
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsState()
 
 
-    ObserveActions(viewModel, snackbarHostState)
+    ObserveActions(
+        viewModel,
+        snackbarHostState,
+        onNavigateToSignUp,
+        onNavigateToMain)
 
     ObserveState(
         uiState = uiState,

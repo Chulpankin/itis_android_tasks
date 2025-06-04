@@ -1,4 +1,4 @@
-package com.itis.bookclub.presentation.auth.signin.combosable
+package com.itis.bookclub.presentation.auth.signin.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
