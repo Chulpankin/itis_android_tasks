@@ -10,12 +10,19 @@ import com.itis.bookclub.presentation.auth.signup.SignUpViewModel
 import com.itis.bookclub.presentation.auth.signup.mvi.SignUpEvent
 
 @Composable
-internal fun SignUpScreen(viewModel: SignUpViewModel) {
+internal fun SignUpScreen(
+    viewModel: SignUpViewModel,
+    onNavigateToSignIn: () -> Unit,
+) {
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsState()
 
 
-    ObserveActions(viewModel, snackbarHostState)
+    ObserveActions(
+        viewModel,
+        snackbarHostState,
+        onNavigateToSignIn
+    )
 
     ObserveState(
         uiState = uiState,

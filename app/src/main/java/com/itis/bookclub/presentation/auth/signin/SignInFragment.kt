@@ -3,7 +3,9 @@ package com.itis.bookclub.presentation.auth.signin
 import android.content.Context
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
-import com.itis.bookclub.presentation.auth.signin.combosable.SignInScreen
+import androidx.navigation.findNavController
+import com.itis.bookclub.R
+import com.itis.bookclub.presentation.auth.signin.composable.SignInScreen
 import com.itis.bookclub.presentation.base.BaseFragment
 import com.itis.bookclub.presentation.themes.BookClubAppTheme
 import com.itis.bookclub.util.DaggerViewModelFactory
@@ -26,7 +28,11 @@ class SignInFragment : BaseFragment() {
         ComposeView(requireContext()).apply {
             setContent {
                 BookClubAppTheme {
-                    SignInScreen(viewModel = viewModel)
+                    SignInScreen(
+                        viewModel = viewModel,
+                        onNavigateToSignUp = { findNavController().navigate(R.id.signUpFragment) },
+                        onNavigateToMain = { findNavController().navigate(R.id.bookListFragment) }
+                    )
                 }
             }
         }

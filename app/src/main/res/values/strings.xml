@@ -25,4 +25,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign in</string>
     <string name="name">Name</string>
+    <string name="cannot_navigate_to_book_details">Cannot navigate to book details</string>
+    <string name="session_is_expired">Your session is expired. Please sign in again</string>
+    <string name="notifications_is_disabled">Notifications is disabled</string>
 </resources>

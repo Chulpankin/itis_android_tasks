@@ -13,6 +13,7 @@ import com.itis.bookclub.presentation.details.BookDetailsFragment
 import com.itis.bookclub.presentation.details.BookDetailsViewModel
 import com.itis.bookclub.presentation.di.PresentationModule
 import com.itis.bookclub.presentation.list.BookListFragment
+import com.itis.bookclub.presentation.service.BookClubFirebaseMessagingService
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -42,6 +43,7 @@ interface AppComponent {
     }
 
     fun inject(activity: MainActivity)
+    fun inject(service: BookClubFirebaseMessagingService)
     fun inject(fragment: BookListFragment)
     fun inject(fragment: BookDetailsFragment)
     fun inject(fragment: SignInFragment)
